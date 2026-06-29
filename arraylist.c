@@ -12,14 +12,20 @@ void al_init(ArrayList* al){
 //if so, double size. realloc the arr.
 //go to index of count, which is next index to be given an element
 //give it an element and increase count;
-void al_add(int x, ArrayList* al){
+int al_add(int x, ArrayList* al){
     if(al->capacity == al->count){
-        al->capacity = al->capacity * 2;
-        al->arr = realloc(al->arr, (sizeof(int) * al->capacity));
+        int* temp = realloc(al->arr, (sizeof(int) * (al->capacity * 2)));
+        if(temp != NULL){
+             al->capacity = al->capacity * 2;
+            al->arr = temp;
+        }else{
+            return 0;
+        }
     }
 
     *(al->arr + (al->count)) = x;
     al->count++;
+    return 1;
 }
 
 //safeguard improper index, then we just copy everything over one index to the left
@@ -55,4 +61,25 @@ int al_get(int i, ArrayList* al, int* out){
 
 void al_free(ArrayList* al){
     free(al->arr);
+}
+
+int al_trim(ArrayList* al){
+    int newSize = al->count;
+
+    if(al->count <= 0) newSize = 4;
+
+    int* temp = realloc(al->arr, (sizeof(int) * newSize));
+
+    if(temp != NULL){
+        al->capacity = newSize;
+        al->arr = temp;
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+
+int al_getSize(ArrayList* al){
+    return al->count;
 }

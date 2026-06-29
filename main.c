@@ -15,14 +15,24 @@ int main(){
         printf("%d", x);
     }
 
+    //print 123
+
     al_remove_index(2, &al);
+
+    //remove 3
 
     for(int i = 0; i < al.count; i++){
         al_get(i, &al, &x);
         printf("%d", x);
     }
 
+    //print 12
+
     printf("\n");
+
+    int size = al_getSize(&al);
+    printf("Size is %d\n", size);
+
 
     return 0;
 }
